@@ -1,0 +1,40 @@
+title: ABYSS LAB
+author: smlijun
+email: abysslab@gmail.com
+description: >
+  This is ABYSSLAB blog. We are interested in Brwoser, Windows, Fuzzing
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-paginate
+  - jekyll-feed
+  - jekyll-redirect-from
+
+minima_reboot:
+  date_format: "%b %-d, %Y"
+  date_format_short: "%b %-d"
+
+header_pages:
+- about.md
+- posts.md
+- github.md
+
+footer_icons:
+- username: abysslab
+  url: https://github.com/abysslab
+  icon: icon-github.svg
+
+paginate: 5
+
+markdown: kramdown
+highlighter: rouge
+    input: GFM
+
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - minima-reboot.gemspec
+
+
+remote_theme: aterenin/minima-reboot
