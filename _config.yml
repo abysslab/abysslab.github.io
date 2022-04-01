@@ -27,8 +27,6 @@ footer_icons:
 paginate: 5
 
 markdown: kramdown
-highlighter: rouge
-    input: GFM
 
 
 exclude:
