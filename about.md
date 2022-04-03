@@ -4,8 +4,8 @@ title: About
 permalink: /about/
 ---
 
+    
 
----
 smlijun
 ---
 ___🏫 Ajou Univ Cyber Security(2020.03.02~)___  
