@@ -44,7 +44,13 @@ cd v8
 
 build/install-build-deps.sh
 %PATH to Fuzzilli%/Targets/V8/fuzzbuild.sh
+sudo sysctl -w 'kernel.core_pattern=|/bin/false'
 ```
+아래와 같은 command로 fuzzer를 실행시킬 수 있다.
+```sh
+swift run --enable-test-discovery FuzzilliCli --profile=v8 ~/v8/v8/out/fuzzbuild/d8
+```
+![fuzzilli](https://raw.githubusercontent.com/abysslab/abysslab.github.io/main/img/fuzzilli_default.png){:style="display:block; margin-left:auto; margin-right:auto"}
 
 
 
