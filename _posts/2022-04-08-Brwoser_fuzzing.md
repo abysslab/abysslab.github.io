@@ -1,7 +1,7 @@
 ---
 layout: post
 author: "smlijun"
-title: Fuzzing JavaScript Engine - Part 1 Trend Research
+title: Fuzzing JavaScript Engine - Part 1 Fuzzilli
 ---
 
 Introduction
