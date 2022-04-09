@@ -32,7 +32,7 @@ cd fuzzilli
 swift build -c release --enable-test-discovery
 ```
 Fuzzilli은 여러 `javascript engine`에 적용이 가능한데 현재 공부하는 쪽이 `chromium`이기 떄문에 `V8`에 Fuzzilli를 적용하려고 한다.
-아래와 같은 방식으로 `V8`의 소스코드를 다운로드 할 수 있다.
+아래와 같은 방식으로 `V8`의 소스코드를 다운로드 하고 fuzzing가능한 형태로 빌드 할 수 있다.
 ```sh
 git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
 export PATH="$PATH:${HOME}/depot_tools"
@@ -43,6 +43,7 @@ fetch v8
 cd v8
 
 build/install-build-deps.sh
+%PATH to Fuzzilli%/Targets/V8/fuzzbuild.sh
 ```
 
 
