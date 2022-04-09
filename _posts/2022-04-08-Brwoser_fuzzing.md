@@ -1,7 +1,7 @@
 ---
 layout: post
 author: "smlijun"
-title: Fuzzing JavaScript Engine 
+title: Fuzzing JavaScript Engine - Part 1 Trend Research
 ---
 
 Introduction
@@ -14,7 +14,36 @@ Fuzzilli
 
 Fuzzing V8 with Fuzzilli
 ---
+먼저 ```Ubuntu 20.04```에서 진행하였다. 먼저 clang-4.0 이상 버전의 clang을 설치해준다.
+```sh
+sudo apt install clang
+```
+이후 swift를 설치해준다.
+```sh
+wget https://swift.org/builds/swift-5.3.3-release/ubuntu2004/swift-5.3.3-RELEASE/swift-5.3.3-RELEASE-ubuntu20.04.tar.gz
+mkdir ~/swift
+tar -xvf swift-5.3.3-RELEASE-ubuntu20.04.tar.gz -C ~/swift
+export PATH=~/swift/swift-5.3.3-RELEASE-ubuntu20.04/usr/bin/:$PATH
+```
+이후 Github의 Fuzzilli 코드를 가져와서 빌드해준다.
+```sh
+git clone https://github.com/googleprojectzero/fuzzilli.git
+cd fuzzilli
+swift build -c release --enable-test-discovery
+```
+Fuzzilli은 여러 `javascript engine`에 적용이 가능한데 현재 공부하는 쪽이 `chromium`이기 떄문에 `V8`에 Fuzzilli를 적용하려고 한다.
+아래와 같은 방식으로 `V8`의 소스코드를 다운로드 할 수 있다.
+```sh
+git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
+export PATH="$PATH:${HOME}/depot_tools"
 
+mkdir ~/v8
+cd ~/v8
+fetch v8
+cd v8
+
+build/install-build-deps.sh
+```
 
 
 
