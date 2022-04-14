@@ -1,18 +1,47 @@
 ---
 layout: post
 author: "smlijun"
-title: Fuzzing JavaScript Engine - Part 1 Fuzzilli
+title: Fuzzing JavaScript Engine - Part 1 Fuzzer Research
 ---
 
-[fuzzilli](https://github.com/googleprojectzero/fuzzilli)
+
 
 Introduction
 ---
 최근 브라우저에 대한 공부를 진행하면서 브라우저에 `Fuzzing`을 진행할 수 있는 방법에 대해서 연구를 진행해보기로 마음을 먹게 되었다. 그동안 자주 사용했던 fuzzer들은 `AFL`과 같은 바이너리 포맷의 input을 타겟으로하기 좋은 fuzzer들만 사용해보았다. AFL을 수정해서 `RDP`를 fuzzing하거나 `Harness`작성을 통해 Fuzzing을 수행해본 경험은 있지만 Javascript와 같은 Syntax가 존재하는 input을 mutation하는 방식은 거의 수행해본 경험이 없다. 따라서 이번글을 어떻게 브라우저를 Fuzzing 할 수 있는지, 특히 브라우저 역시 Fuzzing을 많이 당한? 프로그램중 하나기 때문에 새로운 Fuzzing 아이디어가 필요하다.
 
+
+Challenge for JS mutation
+---
+일반적인 바이너리 포맷에 대한 input들은 AFL이 사용하는 `Havoc`, `filp`등과 같은 일종의 `brute force방식`으로도 충분히 유의미한 testcase들을 생성해 낼 수 있다. 하지만 javascript의 경우 seed data에서 단순히 1바이트가 변경되었다고해서 유의미하게 다른 javscript가 될 수 없다. 오히려 `javascript`의 `syntax`가 깨져버리는 상황만 발생할 가능성이 높다. 예를 들면 아래와 같은 경우가 있다.
+```js
+var name = prompt('test'); // seed
+var name = prompt('t!st'); // correct but same with seed
+bar name = prompt('test'); // incorrect
+```
+따라서 syntax가 맞는 testcase를 위한 새로운 mutator가 필요해진다. 따라서 현재 많이 알려진 `Domato`, `Fuzzilli`, 그리고 최근에 논문급에서 개발된 `freedom`을 사용해보고 내부 구조 공부를 선행해보고자 한다.
+
+
+Domato
+---
+`Domato`는 사용자가 정의한 rule에 따라 문법적으로 유효한 testcase를 만들어주는 mutator이다. 따로 타겟 JS engine에 값을 입해주는 부분은 사용자가 따로 구현해야한다. 또한 말 그대로 "문법적"으로만 유효한 testcase를 만들어낸다. 따라서 문법적으로는 문제가 없더라도 `Semantic`적으로 문제가 있을 확률이 있다. domato에서는 이러한 문제를 해결해주기 위해서 `try-catch()`문을 통해 에러가 발생하여도 뒤의 코드가 정상적으로 실행되게 해준다. 하지만 이러한 방식도 `JIT compile`이 되는 경우 아예 다른 코드가 되게 되면서 여러 한계점이 존재한다.
+
+Generate Testcase with Domato
+---
+`Domato`를 사용하는 방식은 간단하다. 먼저 `Domato`를 clone해준다.
+```sh
+git clone https://github.com/googleprojectzero/domato.git
+```
+단순히 기본적으로 제공되는 rule을 이용해서 testcase를 생성하는 방법은 아래와 같다.
+```sh
+python3 generator.py --output_dir <output directory> --no_of_files <number of output files>
+```
+아래는 domato를 이용하여 10000개의 testcase들을 생성해낸 결과이다.
+![domato](aaaaaa)
+
 Fuzzilli
 ---
-현재 가장 널리 사용되는 `javascript`에 대한 `state-of-art fuzzer`이다. 
+Domato의 단점들을 보안한  `javascript`에 대한 `fuzzer`이다. 
 
 Fuzzing V8 with Fuzzilli
 ---
@@ -56,7 +85,8 @@ swift run --enable-test-discovery FuzzilliCli --profile=v8 ~/v8/v8/out/fuzzbuild
 
 
 
-
+Freedom
+---
 
 
 
@@ -93,7 +123,7 @@ swift run --enable-test-discovery FuzzilliCli --profile=v8 ~/v8/v8/out/fuzzbuild
 
 Reference
 ---
-- [Project Zero Post on blackbox javascript](https://googleprojectzero.blogspot.com/2021/09/fuzzing-closed-source-javascript.html)  
+- [Project Zero Post on Domato](https://googleprojectzero.blogspot.com/2017/09/the-great-dom-fuzz-off-of-2017.html)  
 
 Related Paper
 ---
