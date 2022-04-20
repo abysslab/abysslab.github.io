@@ -19,6 +19,4 @@ nevul37
 ___🐱‍🏍 Republic of Korea Army (2020.12.06 ~ 2022.06.05)___
 
 ### Bug Hunting
-- CVE-1111-1111
-- CVE-1111-1111
-- CVE-1111-1111
+
