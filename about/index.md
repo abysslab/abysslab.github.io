@@ -3,6 +3,9 @@ layout: page
 type: about
 ---
 
+About AbyssLAB
+---
+
 smlijun
 ---
 ___🏫 Ajou Univ Cyber Security (2020.03.02~)___  
