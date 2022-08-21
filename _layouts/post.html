@@ -1,0 +1,22 @@
+---
+layout: layout
+---
+
+{% assign __ = site.data.languages[site.language] %}
+{% include post.html %}
+
+<div id="gitmentContainer"></div>
+<link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+<script src="https://billts.site/js/gitment.js"></script>
+<script>
+var gitment = new Gitment({
+    id: decodeURI(window.location.pathname),
+    owner: 'CythZ',
+    repo: 'CythZ.github.io',
+    oauth: {
+        client_id: '7f9aa36ea2ba7a10b6ff',
+        client_secret: '170fc93045774170b9952e46f249d8ea0d718a99',
+    },
+});
+gitment.render('gitmentContainer');
+</script>
