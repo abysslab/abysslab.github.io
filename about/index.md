@@ -1,10 +1,9 @@
 ---
 layout: page
 type: about
+title: About AbyssLAB
 ---
 
-About AbyssLAB
----
 
 smlijun
 ---
