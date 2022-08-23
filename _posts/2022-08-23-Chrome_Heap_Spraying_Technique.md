@@ -5,6 +5,7 @@ title: Heap Spraying Technique for exploit Chrome UaF Notes
 ---
 [reference1](https://paper.seebug.org/1876/)  
  └ [origin](https://mp.weixin.qq.com/s/tGwCwOQ8eAwm26fHXTCy5A)
+[reference2](https://blog.theori.io/research/escaping-chrome-sandbox/)
 
 Introduction  
 ---
