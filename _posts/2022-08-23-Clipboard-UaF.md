@@ -8,8 +8,8 @@ title: Real case of UaF in Clipboard
 
 Introduction
 ---
-beta 버전에서 난 취약점이라 CVE는 아니지만 UaF가 일어나기 좋은 케이스를 보여준 Issue 1101509를 짧게 소개하려고 한다.
-이 취약점은 RawClipboardHostImpl의 lifetime 때문에 일어나는 취약점이며 간단하게 트리거가 가능하다. (poc는 reference를 참고.)
+Issue 1101509를 짧게 소개하려고 한다.
+이 취약점은 RawClipboardHostImpl의 lifetime 때문에 일어나는 취약점이다.
   
 Root Causes
 ---
@@ -47,7 +47,9 @@ void ClipboardHostImpl::Create(
       },
       host));
 }
-```
-생성자 안에 RenderFrameHost의 raw pointer가 선언되어 있고 객체를 생성할 때 또한 render_frame_host를 이용한다. 해당 코드에는 raw pointer와 object 사이에 lifetime issue가 존재한다. render_frame_host가 free 되면 object도 free 되어야 하지만, 아무런 조치를 취해주지 않아 RawClipboardHostImpl 객체는 dangling pointer를 갖고 있게 되며 이 dangling pointer를 이용한 함수를 호출 시, UaF가 발생하게 된다.  
-이러한 경우를 방지하기 위해 보통은 Mojo interface가 WebcontentsObserver를 상속하여 RenderFrameDeleted를 재정의하거나, FrameServicebase를 사용해서 해결하곤 한다.
 
+```
+ClipboardHostImpl이 RenderFrameHost를 `raw pointer`로 갖고 있다. Create 함수에서 ClipboardHostImpl 객체를 생성할 때 `static_cast<RenderFrameHostImpl*>(render_frame_host)`을 인자로 넘겨주는 것을 확인할 수 있다. 해당 객체가 해제될 경우 `render_frame_host` 또한 같이 메모리에서 해제되어야 하지만 lifetime에 대한 어떠한 처리도 되어있지 않아 UaF가 발생하게 된다. 보통은 WebContentsObserver을 상속받게 하여 `render_frame_host`와 `Mojo interface`의 lifetime을 동일하게 맞춰주는 방법으로 패치를 진행한다.
+```
+PoC
+---
